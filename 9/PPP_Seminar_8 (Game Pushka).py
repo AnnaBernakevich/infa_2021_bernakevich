@@ -104,7 +104,7 @@ class Tank(pygame.sprite.Sprite):
         self.direction = True
         self.rect.left = x
         self.rect.top = y
-        self.lives = 3
+        self.lives = 5
 
 class Gun():
     def __init__(self, screen, x, y):
@@ -285,13 +285,20 @@ while not finished:
     bombs.draw(screen)
     tank.update()
     bombs.update()
+
     scoring = Font.render('Score: ' + str(score), 1, BLUE)
     screen.blit(scoring, (350, 10))
+    living = Font.render('Lives: ' + str(tank_1.lives), 1, BLUE)
+    screen.blit(living, (350, 40))
+
     pygame.display.update()
 
-    hits = pygame.sprite.spritecollide(tank_1, bombs, False) # проверка, не попал ли снаряд в танк
+    hits = pygame.sprite.spritecollide(tank_1, bombs, True) # проверка, не попал ли снаряд в танк
     if hits:
         tank_1.lives -= 1
+
+    if tank_1.lives == 0:
+        finished = True
 
     clock.tick(FPS)
     for event in pygame.event.get():
